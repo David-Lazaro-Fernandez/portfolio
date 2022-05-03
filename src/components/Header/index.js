@@ -44,10 +44,20 @@ const Header = () => {
   };
   const pages = ["About", "Projects", "Contact"];
   const icons = [
-    <TwitterIcon sx={iconStyle} />,
-    <GitHubIcon sx={iconStyle} />,
-    <LinkedInIcon sx={iconStyle} />,
+    {
+      svg: <TwitterIcon sx={iconStyle} />,
+      href: "https://twitter.com/DavidLazaroFern",
+    },
+    {
+      svg: <GitHubIcon sx={iconStyle} />,
+      href: "https://github.com/David-Lazaro-Fernandez",
+    },
+    {
+      svg: <LinkedInIcon sx={iconStyle} />,
+      href: "https://www.linkedin.com/in/davidlfr/",
+    },
   ];
+
   return (
     <>
       <Box sx={wrapper}>
@@ -57,7 +67,7 @@ const Header = () => {
         })}
 
         {icons.map((icon) => {
-          return <Link> {icon}</Link>;
+          return <Link href={icon.href}> {icon.svg}</Link>;
         })}
         <Link>
           <DarkModeIcon sx={iconStyle} />
