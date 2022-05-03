@@ -20,6 +20,13 @@ const Communities = () => {
     objectFit: "contain",
     width: "60px",
   };
+  const text = {
+    width: "280px",
+    color: "#838383",
+    fontFamily: "'Inter'",
+    fontSize: "16px",
+    fontWeight: "300",
+  };
 
   return (
     <>
@@ -28,18 +35,8 @@ const Communities = () => {
         <img src="/Fluent Emojis/devil.png" style={titleImage} />
       </Box>
       <GridImages />
-      <Box sx={{marginTop: "40px",}}>
-        <Typography
-          variant="body"
-          sx={{
-            width: "280px",
-            color: "#838383",
-            fontFamily: "'Inter'",
-            fontSize: "16px",
-            fontWeight: "400",
-            
-          }}
-        >
+      <Box sx={{ marginTop: "40px" }}>
+        <Typography variant="body" sx={text}>
           From meeting the one of the founders of GitHub to organizing one of
           the greatest AI GAMING in Latin America and being top 6 in a world
           wide Local Hack Day.
@@ -62,8 +59,8 @@ const Communities = () => {
           being part of the following communities
         </Typography>
       </Box>
-      <Box sx={{marginTop:'40px'}}>
-        <img src="/Frame 16.png" width="100%"/>
+      <Box sx={{ marginTop: "40px" }}>
+        <img src="/Frame 16.png" width="100%" />
       </Box>
     </>
   );

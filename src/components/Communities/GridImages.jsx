@@ -12,41 +12,39 @@ const GridImages = () => {
   };
   const imageStyle = {
     width: "100%",
-    height:'100%', 
-    objectFit:'cover', 
-    borderRadius:'5px'
-  }
-  const imageStyle2 ={
+    height: "100%",
+    objectFit: "cover",
+    borderRadius: "5px",
+  };
+  const imageStyle2 = {
     width: "100%",
-    objectFit:'cover', 
-    borderRadius:'5px'
-  }
-  const elements = [1, 2, 3, 4];
+    objectFit: "cover",
+    borderRadius: "5px",
+  };
+  const gridBox = {
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gridTemplateRows: "auto",
+    gridTemplateAreas: `"Photo1 Photo1 Photo4 Photo4"
+            "Photo1 Photo1 Photo4 Photo4"
+            "Photo2 Photo-3 Photo4 Photo4"
+            "Photo2 Photo-3 Photo4 Photo4"`,
+    gap: 1,
+  };
   return (
     <>
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gridTemplateRows: "auto",
-          gridTemplateAreas: `"Photo1 Photo1 Photo4 Photo4"
-                  "Photo1 Photo1 Photo4 Photo4"
-                  "Photo2 Photo-3 Photo4 Photo4"
-                  "Photo2 Photo-3 Photo4 Photo4"`,
-          gap: 1,
-        }}
-      >
-        <Box sx={{ gridArea: "Photo1",}}>
-          <img src="/image 18.png" style={imageStyle2}/>
-          <img src="/image (9).png" style={imageStyle2}/>
+      <Box sx={gridBox}>
+        <Box sx={{ gridArea: "Photo1" }}>
+          <img src="/image 18.png" style={imageStyle2} />
+          <img src="/image (9).png" style={imageStyle2} />
         </Box>
-        <Box sx={{ gridArea: "Photo2",}}>
+        <Box sx={{ gridArea: "Photo2" }}>
           <img src="/image 14.png" style={imageStyle} />
         </Box>
-        <Box sx={{ gridArea: "Photo-3", }}>
-          <img src="/image 10.png" style={imageStyle}/>
+        <Box sx={{ gridArea: "Photo-3" }}>
+          <img src="/image 10.png" style={imageStyle} />
         </Box>
-        <Box sx={{ gridArea: "Photo4",  }}>
+        <Box sx={{ gridArea: "Photo4" }}>
           <img src="/Group 18.png" style={imageStyle} />
         </Box>
       </Box>

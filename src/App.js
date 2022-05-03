@@ -7,6 +7,8 @@ import AboutMe from "./components/AboutMe";
 import MySkills from "./components/MySkills";
 import Projects from "./components/Projects";
 import Communities from "./components/Communities";
+import Contact from './components/Contact';
+import Footer from "./components/Footer";
 
 function App() {
   //style
@@ -39,6 +41,12 @@ function App() {
           </Grid>
           <Grid item sx={bottomBorder}>
             <Communities />
+          </Grid>
+          <Grid item sx={bottomBorder}>
+            <Contact />
+          </Grid>
+          <Grid item >
+            <Footer />
           </Grid>
         </Grid>
       </Container>
