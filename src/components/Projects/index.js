@@ -23,6 +23,7 @@ const Projects = () => {
                   title={project.title}
                   about={project.about}
                   image={project.image}
+                  link = {project.href}
                 />
               </Grid>
             </>

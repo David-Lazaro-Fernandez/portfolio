@@ -6,7 +6,7 @@ import Box  from "@mui/material/Box";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
 const ProjectCard = (props) => {
-  const { title, about, image } = props;
+  const { title, about, image, link } = props;
   //styles
   const contentWrapper = {
     p: 2,
@@ -61,8 +61,8 @@ const ProjectCard = (props) => {
           <Typography sx={titleStyle}>{title}</Typography>
           <Typography sx={aboutStyle}>{about}</Typography>
           <Box sx={buttonWrapper}>
-            <Button sx={buttonStyle} startIcon={<RemoveRedEyeIcon sx={icon} />}>
-              Learn more
+            <Button sx={buttonStyle} href={link} startIcon={<RemoveRedEyeIcon sx={icon} />}>
+              Learn More
             </Button>
           </Box>
         </Box>

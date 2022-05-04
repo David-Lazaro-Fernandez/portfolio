@@ -37,9 +37,18 @@ const Footer = () => {
       fontWeight:'300',
   }
   const icons = [
-    <TwitterIcon sx={iconStyle} />,
-    <GitHubIcon sx={iconStyle} />,
-    <LinkedInIcon sx={iconStyle} />,
+    {
+      svg: <TwitterIcon sx={iconStyle} />,
+      href: "https://twitter.com/DavidLazaroFern",
+    },
+    {
+      svg: <GitHubIcon sx={iconStyle} />,
+      href: "https://github.com/David-Lazaro-Fernandez",
+    },
+    {
+      svg: <LinkedInIcon sx={iconStyle} />,
+      href: "https://www.linkedin.com/in/davidlfr/",
+    },
   ];
   return (
     <>
@@ -49,7 +58,7 @@ const Footer = () => {
         <Typography variant="body" sx={David} >&lt;/&gt; with 💖 by @Davidthelord 2022</Typography>
 
         {icons.map((icon) => {
-          return <Link> {icon}</Link>;
+          return <Link href={icon.href}> {icon.svg}</Link>;
         })}
       </Box>
     </>
