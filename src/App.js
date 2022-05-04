@@ -1,6 +1,5 @@
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import AboutMe from "./components/AboutMe";
