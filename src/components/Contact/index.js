@@ -1,10 +1,45 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import Snackbar from "@mui/material/Snackbar";
+import emailjs from "@emailjs/browser";
 
 const Contact = () => {
+  const Emailform = useRef();
+  const [open, setOpen] = useState(false);
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+    emailjs
+      .sendForm(
+        "service_npgh7nd",
+        "template_smv2akw",
+        Emailform.current,
+        "DLFL-G3wwNsOe-G-Y"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          setOpen(true);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+    Emailform.current.reset();
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   //Styles
   const header = {
     marginRight: "20px",
@@ -36,8 +71,25 @@ const Contact = () => {
     color: "#8C8C8C",
     marginBottom: "20px",
   };
-  const form = { display: "flex", flexDirection: "column", justifyContent: "flex-start" };
-  const davidImg = { width: "100%", borderRadius: "5px", height:'375px', objectFit:'cover' };
+  const form = {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+  };
+  const davidImg = {
+    width: "100%",
+    borderRadius: "5px",
+    height: "375px",
+    objectFit: "cover",
+  };
+  const buttonStyle = {
+    backgroundColor: "#1b1b1b",
+    color: "white",
+    "&: hover": { color: "#1b1b1b" },
+  };
+  const wrapper = {
+    marginBottom: "40px",
+  };
   return (
     <>
       <Box sx={titleWrapper}>
@@ -60,20 +112,46 @@ const Contact = () => {
         alignItems="flex-start"
         alignContent="center"
         wrap="nowrap"
+        sx={wrapper}
       >
         <Grid item xl={6} lg={6} md={6}>
-          <Box component="form" sx={form}>
-            <TextField variant="outlined" label="Name" sx={input} />
-            <TextField variant="outlined" label="Email Adress" sx={input} />
-            <TextField variant="outlined" label="Subject" sx={input} />
+          <Box component="form" ref={Emailform} sx={form}>
+            <TextField
+              variant="outlined"
+              label="Name"
+              name="from_name"
+              sx={input}
+            />
+            <TextField
+              variant="outlined"
+              label="Email Adress"
+              name="to_email"
+              sx={input}
+            />
+            <TextField
+              variant="outlined"
+              label="Subject"
+              name="subject"
+              sx={input}
+            />
             <TextField
               variant="outlined"
               multiline
               rows={5}
               label="Say Hello!"
+              name="message"
               sx={input}
             />
           </Box>
+          <Button sx={buttonStyle} onClick={sendEmail}>
+            Send Email
+          </Button>
+          <Snackbar
+            open={open}
+            autoHideDuration={6000}
+            onClose={handleClose}
+            message="Your Email Has Been Succesfully Sended To Me 🐱💚"
+          />
         </Grid>
         <Grid item xl={6} lg={6} md={6}>
           <img src="/David 2.png" style={davidImg} />
