@@ -6,13 +6,13 @@ const Hero = () => {
   const wrapper = {
     display: "flex",
     flexDirection: "row",
-    marginBottom:'50px'
+    marginBottom: '50px'
   };
   const leftBox = {
     width: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent:'center',
+    justifyContent: 'center',
     alignItems: "flex-start",
     position: "relative",
   };
@@ -35,25 +35,30 @@ const Hero = () => {
     right: "200px",
   };
   const body = {
-    fontFamily:"'Inter', sans-serif",
-    color:'#838383',
-    marginTop:'30px',
+    fontFamily: "'Inter', sans-serif",
+    color: '#838383',
+    marginTop: '30px',
   }
   const firstSparkle = {
-      position:'absolute',
-      top:'-20px',
-      left:'360px',
-      width:'65px'
+    position: 'absolute',
+    top: '-20px',
+    left: '360px',
+    width: '65px'
   }
   const secondSparkle = {
-    position:'absolute',
-    top:'250px',
-    left:'145px',
-    width:'40px',
-    transform:'rotate(130deg)'
+    position: 'absolute',
+    top: '250px',
+    left: '145px',
+    width: '40px',
+    transform: 'rotate(130deg)'
   }
   return (
     <>
+      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
+        <img src="/Fluent Emojis/warning.png" width="50px" />
+        <p>This is a really old porfolio, David's currently working in a new one.</p>
+      </div>
+      <hr style={{marginBottom:'20px'}} />
       <Box sx={wrapper}>
         <Box sx={leftBox}>
           <Typography variant="h4" sx={title}>
@@ -71,9 +76,9 @@ const Hero = () => {
           </Typography>
         </Box>
         <Box sx={rightBox}>
-          <img src="/David 1.png" width="300px" />
-          <img src="/Fluent Emojis/sparkles.png"  style={firstSparkle}/>
-          <img src="/Fluent Emojis/sparkles.png" style={secondSparkle}/>
+          <img src="/David PP.png" width="300px" style={{ borderRadius: '100%' }} />
+          <img src="/Fluent Emojis/sparkles.png" style={firstSparkle} />
+          <img src="/Fluent Emojis/sparkles.png" style={secondSparkle} />
         </Box>
       </Box>
     </>
