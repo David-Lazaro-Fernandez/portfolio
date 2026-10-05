@@ -1,0 +1,82 @@
+export const metadata = {
+  title: "Audio Visualizer",
+  summary:
+    "A recreation of the Xbox 360 blade dashboard in the browser, with a music player that analyzes real audio and eleven visualizers that react to it.",
+  year: "2026",
+  stack: ["Next.js", "TypeScript", "WebGL", "Three.js", "Web Audio API"],
+};
+
+<Figure
+  src="/work/audio-visualizer/games.png"
+  width={1600}
+  height={724}
+  alt="Recreated Xbox 360 dashboard with the green Games blade open: a gamer profile card, a menu of achievements, played games, Xbox Live Arcade, and demos, and the other blades folded to each side"
+  caption="The Games blade. The other blades fold into curved tabs on each side."
+/>
+
+## The idea
+
+A personal project: rebuild the Xbox 360 "blade" dashboard as a website, and make its music player actually play, with visualizers in the spirit of the ones that came with the console. It's a fan recreation, not affiliated with Microsoft. [Try it live](https://david-lazaro-fernandez.github.io/Audio-Visualizer/blade-dashboard-mockups/) or read the [code on GitHub](https://github.com/David-Lazaro-Fernandez/Audio-Visualizer).
+
+## The dashboard
+
+It's a 10-foot UI, made to be read from a couch: large, high contrast, and driven by a D-pad cursor instead of a mouse. All five blades are built (Marketplace, Xbox LIVE, Games, Media, and System), and you can move through them with the arrow keys, the keyboard shortcuts for the controller buttons, or a real gamepad through the Gamepad API.
+
+<Figure
+  src="/work/audio-visualizer/media.png"
+  width={1600}
+  height={1000}
+  alt="The blue Media blade with Music, Pictures, Videos, and Media Center"
+  caption="Media, with the water surface moving behind the panel."
+/>
+
+A few details that took the most care:
+
+- **The blade curve.** No panel is a rectangle. Every edge, open or folded, comes from one "lazy S" curve: a straight drop, a near-vertical shoulder, a slight bow inward at the waist, and a flare at the bottom. It's sampled from two cubic Béziers so it's as smooth as an SVG path.
+- **A water surface behind everything.** The background is a WebGL wave field, painted in each blade's color.
+- **The small stuff.** The original navigation sounds, the sign-in toast, switching profiles, and screens like Achievements, My Games, and the picture browser.
+
+<Figure
+  src="/work/audio-visualizer/xbox-live.png"
+  width={1600}
+  height={891}
+  alt="The orange Xbox LIVE blade with the gamer profile card and a Connect to Xbox LIVE option"
+  caption="Xbox LIVE."
+/>
+
+<Figure
+  src="/work/audio-visualizer/my-games.png"
+  width={1600}
+  height={905}
+  alt="My Games screen with a list of games such as Castlevania, Halo 3, and Doom, and a detail panel for the selected game"
+  caption="My Games."
+/>
+
+## A music player that listens
+
+The player plays real audio: each track is the store's 30-second preview, and a Web Audio `AnalyserNode` reads it as it plays, so every visualizer shows the spectrum of the actual song.
+
+<Figure
+  src="/work/audio-visualizer/music-player.png"
+  width={1547}
+  height={937}
+  alt="Music Player with a fractal visualizer playing Digital Love by Daft Punk, next to the current playlist from Discovery"
+  caption="The Music Player, with the playlist on the right."
+/>
+
+Getting it to look like the music took more than reading the FFT:
+
+- **Logarithmic bands.** Splitting the FFT bins evenly puts everything from 20 Hz to 470 Hz in a single band, so the kick, the bass line, and most of the rhythm get one bar out of 28, and the display looks unrelated to the song. The bands are spaced about a third of an octave apart instead, which gives the bass ten bands.
+- **Drops on the beat.** In the Water visualizer, every hit drops a ripple into the wave field. Drops fire on onsets, when a band jumps above its own recent average, not on loudness, which would fire 60 times a second. High bands also wait longer between drops, so hi-hats don't wash out the bass.
+
+## Eleven visualizers
+
+LED Matrix, Mirror Bars, Radial, Water, Spectrogram, Grid, Curl Field, Core, Warp, Harlequin, and Mandelbrot. The shoulder buttons cycle through them, as on the console. Warp is a port of the 1998 Geiss screensaver, and Harlequin runs on a small engine for MilkDrop-style presets, with per-frame and per-pixel equations warping the previous frame.
+
+<Figure
+  src="/work/audio-visualizer/visualizers.png"
+  width={1544}
+  height={764}
+  alt="Six visualizers: an LED matrix, mirrored bars, a radial burst, water ripples, a glowing core, and a Mandelbrot fractal"
+  caption="LED Matrix, Mirror Bars, Radial, Water, Core, and Mandelbrot, all reacting to the same track."
+/>

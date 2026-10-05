@@ -1,0 +1,91 @@
+export const metadata = {
+  title: "Matiné",
+  summary:
+    "Competitive intelligence for movie theaters in Mexico: it captures every showtime, price, and seat map three times a day and turns them into data a cinema chain can compare.",
+  year: "2026",
+  stack: ["Python", "SQLite", "Streamlit", "FastAPI", "Next.js", "AWS"],
+};
+
+<Figure
+  src="/work/matine/landing.png"
+  width={1440}
+  height={900}
+  alt="Matiné landing page with the headline 'Lo que tu competencia cancela', a short description, and buttons to request access"
+  caption="The landing page. The headline cycles through what the competition schedules, cancels, moves, charges, and presells."
+/>
+
+## The goal
+
+A cinema chain wants to know what its competitors do every day: which shows they schedule, cancel, or move, what they charge, how full their rooms get, and what they sell at the snack bar. Until now, that meant checking listings by hand.
+
+[Matiné](https://matine.lat) does it automatically. It captures the full listings of the two largest cinema chains in Mexico across all 32 states, plus cinematheques in Mexico City, Guadalajara, and Monterrey, compares them show by show, and surfaces only the changes that matter.
+
+## What it captures
+
+- **Listings, three times a day** (7:30, 13:30, and 20:30). Each capture is compared with the previous one to detect five kinds of change: a new show, a canceled one, a moved one, a change of language or format, and a change in occupancy.
+- **Attendance**, by reading seat maps every hour, 15 to 75 minutes after each show starts.
+- **Presales**, read once a day before a film opens.
+- **Ticket prices** by cinema, format, and type of day, **snack bar menus**, and the prices of the same snacks on delivery apps.
+- **Room capacity**, refreshed monthly.
+
+Every raw response is kept, so any capture can be recalculated later.
+
+## How it's built
+
+- **One database, one writer.** Everything lives in SQLite, with a single process writing at a time and daily backups. Each chain is downloaded in units that fail independently, so a failed region keeps its previous listings instead of breaking the whole capture.
+- **Business logic in one place.** All the analysis lives in pure Python functions with no dependencies, shared by the dashboard and the public API, so nothing is written twice.
+- **One schedule.** Every job is defined once in a registry, and from it come the server's systemd timers, the local agents on my Mac, and the health checks that know which captures to expect.
+- **Continuous deployment.** Every push runs linting and tests against recorded real responses. When `main` passes, CI moves a `stable` branch, and the server picks it up within 15 minutes.
+- **A small server.** It runs on a 2 GB AWS instance behind Caddy, with HTTPS.
+
+## Three products on the same data
+
+**The dashboard**, built with Streamlit, compares the chains by city or nationwide: listings, a map, snack bar prices, independent cinemas, and a data explorer. It has its own accounts and sessions, with invitation and password-reset emails, and an operations page for admins with the live health of every capture.
+
+Every finding is written as a decision, with the numbers that support it next to it, and the page is split into three layers: what matters today, the evidence, and the full detail.
+
+<Figure
+  src="/work/matine/dashboard-findings.png"
+  width={1600}
+  height={1385}
+  alt="Dashboard listings page comparing two chains in Mexico City, with chain names blurred: findings about snack bar prices and presale sales, each with a suggested decision and supporting figures"
+  caption="Listings: each finding comes with the decision it supports. Chain names are blurred to keep the pilot client private."
+/>
+
+<Figure
+  src="/work/matine/dashboard-snacks.png"
+  width={1600}
+  height={1385}
+  alt="Dashboard snack bar page with chain names blurred: today's finding on delivery prices and the evidence comparing in-theater and delivery menus"
+  caption="Snack bar: in-theater menus by complex and delivery prices, platform against platform."
+/>
+
+**"¿A dónde ir?"** ("Where should we go?") is a public demo that answers a simple question: which shows near me fit my group's budget? You set a starting point, the group (adults, kids, and seniors), and a budget. It adds up the tickets, finds the cheapest snack combos that cover the whole group at each cinema, applies the day's promotions, and links straight to buying.
+
+<Figure
+  src="/work/matine/adi-map.png"
+  width={1920}
+  height={1200}
+  alt="Map of southern Mexico City with a red starting point in Coyoacán, a 5 km circle, and a dot for every cinema with shows inside it"
+  caption="Every cinema with shows within 5 km of the starting point."
+/>
+
+<Figure
+  src="/work/matine/adi-options.png"
+  width={1920}
+  height={1200}
+  alt="Search options over the map: who's going (2 adults and 1 child), snacks set to the cheapest option for the group, when, budget, and more filters"
+  caption="Who's going, snacks, when, and budget."
+/>
+
+<Figure
+  src="/work/matine/adi-results.png"
+  width={1920}
+  height={1200}
+  alt="Results for 2 adults: the cheapest show at 136 pesos in total, the closest at 1.3 km, and a table of shows with cinema, film, time, format, tickets, snacks, total, distance, and buy links"
+  caption="Results: the cheapest and the closest show, then every option with its full cost and a link to buy."
+/>
+
+**The public API**, built with FastAPI, answers those searches. The demo used to download a static catalog, but that exposed every price, which is exactly the competitive data the product sells. Now the API returns only the answer to each search, with a per-IP limit and compressed responses.
+
+The marketing site is a static Next.js site on Vercel. It never names the chains, because naming the pilot client would reveal it to its competitors.

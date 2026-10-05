@@ -1,0 +1,92 @@
+export const metadata = {
+  title: "Astral Tickets",
+  summary:
+    "A ticketing and entertainment platform for Astral Tickets: a public site for finding events and picking seats, and an internal dashboard for managing events, seat maps, sales, and printed tickets.",
+  studio: "M.L Cats Consultancy",
+  year: "2025",
+  stack: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "Recharts"],
+};
+
+<Figure
+  src="/work/astral/home.png"
+  width={852}
+  height={804}
+  alt="Ticketing home page with category filters for sports, theater, and concerts, a featured concert banner, an event search with a location field, and a grid of upcoming events"
+  caption="Home: a featured event, search by event and city, and upcoming events."
+/>
+
+## The goal
+
+[Astral Tickets](https://astraltickets.com) is a ticketing platform for live events in Mexico, from concerts and shows to *palenques*. The project, which started under the working name Boletera, covered both sides of selling a ticket: the site where fans find an event and choose their seats, and the tools the team uses to set up events and run the box office.
+
+## Buying a ticket
+
+Fans can browse by category or search by event and city. Each event page has the date, the venue with a map, the event details, and an FAQ.
+
+<Figure
+  src="/work/astral/event.png"
+  width={844}
+  height={833}
+  alt="Event page for a comedy show with the poster, date and time, a buy button, event details, frequently asked questions, and the venue address with a map"
+  caption="Event page."
+/>
+
+From there, fans pick their seats on the venue's map, with every zone and its price listed next to it, and see a running summary of their seats before paying.
+
+<Figure
+  src="/work/astral/seats.png"
+  width={844}
+  height={854}
+  alt="Seat selection page showing a stadium map with colored zones, a price list for each zone from 700 to 2,500 MXN, and a summary of the selected seats by zone and row"
+  caption="Choosing seats by zone, with prices and a running summary."
+/>
+
+After checkout, the confirmation page shows the event again with the venue details, so everything a fan needs is in one place.
+
+<Figure
+  src="/work/astral/confirmation.png"
+  width={844}
+  height={697}
+  alt="Purchase confirmation page reading 'Your tickets for La Pensión are yours', with the event poster, details, and venue"
+  caption="Purchase confirmation."
+/>
+
+## The dashboard
+
+Behind the site, I built an internal dashboard in [Next.js](https://github.com/David-Lazaro-Fernandez/Boletera) for the team. It has an overview of sales, tickets sold, and recent purchases, plus sections for events, seat maps, sales channels, per-event finances, and reports.
+
+<Figure
+  src="/work/astral/dashboard.png"
+  width={1133}
+  height={659}
+  alt="Admin dashboard with cards for total sales, tickets sold, sales, and active users, a monthly sales bar chart, and a list of recent sales"
+  caption="The dashboard overview. All names and figures shown are sample data; the company's real data is private."
+/>
+
+### Seat maps generated from data
+
+Palenques are round arenas with rings of seating around a central ring. Instead of drawing each venue by hand, the seat map is generated from a JSON description of the venue: each zone lists its angle, number of sections, rows, and price. The map lays out every row as an arc around the center, converting polar coordinates into seat positions, so a 2,400-seat venue becomes a clickable map where staff can select seats and see their zone and price.
+
+<Figure
+  src="/work/astral/palenque.png"
+  width={570}
+  height={583}
+  alt="Circular palenque seat map with the central ring, four VIP sections, eight gold sections, and an outer general admission ring"
+  caption="A palenque seat map, generated from the venue's zones."
+/>
+
+### Printed tickets
+
+The box office also sells tickets in person, so the dashboard can print them. Staff fill in the section, row, seat, price, order number, and ticket type, and the dashboard sends it to a print service that produces the physical ticket with its QR code.
+
+<Figure
+  src="/work/astral/ticket.png"
+  width={957}
+  height={382}
+  alt="Printed ticket template with the event title, venue, city, date and time, price, order number, ticket type, section, row, seat, and a QR code"
+  caption="The printed ticket template."
+/>
+
+## Working with the client
+
+We worked through the full flow with the client, from the public site to the box office, before building the dashboard. The site's screens were designed first, covering search, the event page, seat selection, checkout, and confirmation, and I built the dashboard in Next.js. The screenshots here use sample data, since the client's sales and customer data is private.

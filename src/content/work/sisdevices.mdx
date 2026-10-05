@@ -1,0 +1,79 @@
+export const metadata = {
+  title: "Sis Devices",
+  summary:
+    "A redesign of the website for Sis Devices, an industrial machine-safety supplier, turning it into an online store with a catalog, cart, checkout, and admin dashboard.",
+  studio: "M.L Cats Consultancy",
+  year: "2024 – 2025",
+  stack: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "Firebase", "next-intl"],
+};
+
+<Figure
+  src="/work/sisdevices/search.png"
+  width={1728}
+  height={1615}
+  alt="Sis Devices home page with the search modal open, showing suggested searches and category thumbnails above benefit cards, brand discount banners for Caterpillar and Honeywell, and category tiles"
+  caption="The new home page, with search open."
+/>
+
+## The goal
+
+[Sis Devices](https://sisdevices.com) sells machine-safety equipment in Monterrey: light curtains, safety sensors, guards for lathes and drills, forklift safety gear, and lockout/tagout devices.
+
+The project was a redesign of their old site into an online store. Customers needed to find a product fast, understand its technical specs, and buy it online, while the team needed to manage the catalog themselves.
+
+## Design
+
+Every screen was designed first: home, catalog, product, cart, checkout, and order confirmation. The look stays close to the brand, with yellow and black on a light background, the colors of safety signage.
+
+<Figure
+  src="/work/sisdevices/catalog.png"
+  width={1728}
+  height={1560}
+  alt="Catalog page with a category sidebar and grids of product categories such as safety relays, coded sensors, ATEX devices, and inductive and ultrasonic sensors"
+  caption="The catalog, grouped by machine and by device type."
+/>
+
+The catalog is organized two ways, because customers shop both ways: by the machine they need to protect (forklifts, cranes, lathes, drills, saws) and by the type of device (safety relays, coded sensors, ATEX equipment, inductive and ultrasonic sensors).
+
+<Figure
+  src="/work/sisdevices/product.png"
+  width={1728}
+  height={1320}
+  alt="Product page for a forklift LED safety light with an image gallery, price, add-to-cart and buy-now buttons, a 'talk to an expert' card to book a call, and a table of product specifications"
+  caption="Product page: specs, a downloadable data sheet, and a way to talk to an expert."
+/>
+
+Safety equipment is technical, so product pages go beyond a photo and a price. Each one has a spec table, a downloadable data sheet, and a technical zone that explains concepts like the minimum safety distance for a light curtain. A "talk to an expert" card lets customers book a call. For products that have to be sized to a machine, like the safety blocks for presses, the page includes a step-by-step quote form instead of a plain checkout.
+
+<Figure
+  src="/work/sisdevices/cart.png"
+  width={1728}
+  height={1752}
+  alt="Shopping cart with three products, quantity controls, an option to request an invoice, a privacy notice checkbox, and a pay button"
+  caption="The cart, with an option to request an invoice."
+/>
+
+<Figure
+  src="/work/sisdevices/checkout.png"
+  width={1728}
+  height={1100}
+  alt="Checkout page with an order summary on the left and delivery and payment forms on the right"
+  caption="Checkout."
+/>
+
+The cart lets customers request an invoice (*factura*), and the confirmation page explains how to send their tax details.
+
+## Build
+
+I built the store with Next.js and TypeScript, styled with Tailwind CSS and shadcn/ui components, on top of Firebase:
+
+- **Catalog and products** live in Firestore, with images in Firebase Storage. I migrated and cleaned up the existing product data into the new structure.
+- **Search** opens as a modal with suggested searches and category shortcuts.
+- **Accounts and cart**: customers sign up and sign in with Firebase Auth, and the cart persists across pages.
+- **English and Spanish**: the whole site is translated with next-intl, with a language switch in the header.
+- **Admin dashboard**: the team manages products (create, edit, upload images, and write descriptions in a rich text editor), with pages for orders, customers, and analytics.
+- **Content pages**: services, safety norms, and an about page.
+
+## Working with the client
+
+We started from their old site and catalog and designed the full purchase flow before writing code, from browsing to the order confirmation. Then I built the store piece by piece between December 2024 and February 2025: the landing page, product pages, catalog, cart, translations, and finally the admin dashboard.

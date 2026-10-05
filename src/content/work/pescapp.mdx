@@ -1,0 +1,72 @@
+export const metadata = {
+  title: "Pescapp",
+  summary:
+    "A mobile app that tracks fishing trips even without coverage, and a dashboard that lets the dock follow every boat's route.",
+  studio: "M.L Cats Consultancy",
+  year: "2025",
+  stack: ["Flutter", "Firebase", "SQLite", "Google Maps", "OpenWeather", "Streamlit"],
+};
+
+<Figure src="/work/pescapp/cover.png" alt="Pescapp logo, a fish and a hook inside a compass, next to the words Pescapp and ML Cats Consulting" />
+
+## The goal
+
+Build an app that's easy to navigate and lets fishermen see where they are in real time, while the dock keeps a record of every trip. Out at sea there's often no coverage, so the app couldn't depend on a connection to track where a boat goes.
+
+That meant delivering three things together:
+
+- **An interface that's easy to use** on a phone, on a boat
+- **A system for recording and storing** each boat's position
+- **A platform for viewing routes** from the dock
+
+## The app
+
+<Figure
+  src="/work/pescapp/screens.png"
+  alt="Four phone screens: the splash screen, a home dashboard with weather and a boat status table, a detailed weather view, and a map with filters for docks and fishing spots"
+  caption="Splash, home, weather, and map."
+/>
+
+Pescapp is built in [Flutter](https://github.com/David-Lazaro-Fernandez/pescapp-2.0), so one codebase covers Android, iOS, and the web. Fishermen sign in with Firebase Auth, and the home screen shows the day's weather for their area next to a table with each boat's latest status.
+
+<Figure
+  src="/work/pescapp/dashboard.png"
+  alt="Home screen showing 34°C and sunny, rain probability, humidity, and wind, an hourly temperature chart, and a table of boat statuses and times"
+  caption="Home: today's weather and the status of every boat."
+/>
+
+A dedicated weather view, powered by OpenWeather forecasts, breaks down temperature, rain, and wind, since those decide whether it's safe to go out.
+
+<Figure
+  src="/work/pescapp/weather.png"
+  alt="Detailed weather screen with hourly temperature, precipitation, and wind charts"
+  caption="Detailed weather for the area."
+/>
+
+The map, built on Google Maps, shows where the boat is, with filters for docks and fishing spots. From there the fisherman starts and ends a trip with one button. The app also includes a catalog of the fish found in the region.
+
+<Figure
+  src="/work/pescapp/routes.png"
+  alt="Map of the coast showing a boat's route as connected waypoints, with a card listing departure at 4:05 a.m. and arrival at 11:04 a.m."
+  caption="Each boat's route, from departure to arrival."
+/>
+
+## Tracking without coverage
+
+The app works **offline first**:
+
+- While a trip is active, the app records the boat's position every two minutes, along with speed, altitude, and accuracy. It runs as an Android foreground service, so tracking keeps going with the screen off.
+- Every point is saved first to a local SQLite database on the phone, so nothing is lost when the boat is out of coverage.
+- Every minute, a sync job checks for a connection and uploads any pending trips and points to Firestore, then cleans up old synced data.
+
+## The dashboard
+
+On land, a [Streamlit dashboard](https://github.com/ZaidDeAnda/pescapp-streamlit) reads the same Firestore collections. You pick a trip by date, and it draws the route on a Folium map, with a marker for every recorded point connected by a line.
+
+## Working with the client
+
+Before writing any code, we put together a proposal with the client that laid out the goal, the scope, the interface, and the architecture. Then we split the work into three sprints:
+
+1. **Mobile app**: the Flutter app, with weather, the map, and trip tracking.
+2. **Cloud and dashboard**: Firebase and the Streamlit dashboard.
+3. **Testing and support**: stress tests, functional validation, and the start of support.
