@@ -1,10 +1,11 @@
 import Image from "next/image";
+import { FIGURE_SIZES } from "@/lib/images";
 
 // @next/mdx needs this file in the App Router. The `.prose` class in globals.css styles the text.
 
 // Give the width and height of the source file.
 // next/image uses them to keep the space for the image and to make smaller versions.
-function Figure({ src, alt, caption, width = 1920, height = 1080 }) {
+function Figure({ src, alt, caption, width = 1920, height = 1080, preload = false }) {
   return (
     <figure className="my-10">
       <Image
@@ -12,7 +13,8 @@ function Figure({ src, alt, caption, width = 1920, height = 1080 }) {
         alt={alt}
         width={width}
         height={height}
-        sizes="(min-width: 640px) 592px, 100vw"
+        preload={preload}
+        sizes={FIGURE_SIZES}
         className="w-full rounded-xl border border-hairline"
       />
       {caption && <figcaption className="mt-3 text-sm text-mute">{caption}</figcaption>}

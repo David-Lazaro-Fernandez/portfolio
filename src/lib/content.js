@@ -16,11 +16,20 @@ export function collection(name) {
     return { slug, Content, ...metadata };
   }
 
+  // Reads the first <Figure> of the file, so the home page can prefetch it.
+  async function getCover(slug) {
+    const source = await fs.readFile(path.join(dir, `${slug}.mdx`), "utf8");
+    const figure = source.match(/<Figure[\s\S]*?\/>/)?.[0];
+    if (!figure) return null;
+    const prop = (name) => figure.match(new RegExp(`${name}=(?:"([^"]+)"|\\{(\\d+)\\})`))?.slice(1).find(Boolean);
+    return { src: prop("src"), width: Number(prop("width")), height: Number(prop("height")) };
+  }
+
   async function getAll() {
     return Promise.all((await getSlugs()).map(get));
   }
 
-  return { getSlugs, get, getAll };
+  return { getSlugs, get, getCover, getAll };
 }
 
 export const notes = collection("notes");
