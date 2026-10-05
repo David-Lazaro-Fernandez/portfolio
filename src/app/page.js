@@ -1,5 +1,7 @@
 import Section, { Entry, Row } from "@/components/Section";
 import TextLink from "@/components/TextLink";
+import PrefetchImages from "@/components/PrefetchImages";
+import { work } from "@/lib/content";
 import {
   profile,
   experience,
@@ -10,9 +12,12 @@ import {
   education,
 } from "@/content/site";
 
-export default function Home() {
+export default async function Home() {
+  const covers = (await Promise.all((await work.getSlugs()).map(work.getCover))).filter(Boolean);
+
   return (
     <>
+      <PrefetchImages images={covers} />
       <p className="mt-16 text-body">{profile.intro}</p>
 
       <Section title="Experience">
