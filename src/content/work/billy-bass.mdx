@@ -3,8 +3,17 @@ export const metadata = {
   summary:
     "A Big Mouth Billy Bass from a flea market, rewired with an ESP32 into a Bluetooth speaker and a voice assistant that moves its mouth as it talks.",
   year: "2026",
-  stack: ["ESP32", "C++", "PlatformIO", "Python", "Vosk", "Whisper", "DeepSeek", "Piper"],
+  stack: ["ESP32", "C++", "PlatformIO", "Python", "Vosk", "Whisper", "DeepSeek", "Amazon Polly"],
 };
+
+<Figure
+  preload
+  src="/work/billy-bass/cover.png"
+  width={1014}
+  height={700}
+  alt="Big Mouth Billy Bass, a rubber largemouth bass mounted on a wooden plaque with a brass Big Mouth Billy Bass nameplate and a red button"
+  caption="Billy, as he came from the tianguis."
+/>
 
 ## The idea
 
@@ -12,9 +21,34 @@ I bought a Big Mouth Billy Bass at a tianguis for 500 pesos. I love The Sopranos
 
 It works in phases, and it's still in progress. Today the fish is a Bluetooth speaker whose mouth follows the music, it hears "Billy, …" commands, and it answers free questions with a voice and a mouth in sync. The last missing piece is a small amplifier, so for now the replies play through the PC speakers instead of the fish's own.
 
+<Video
+  src="/work/billy-bass/demo.mp4"
+  poster="/work/billy-bass/demo-poster.png"
+  width={540}
+  height={960}
+  label="Billy Bass on its plaque on the dining table"
+  caption="Billy on the dining table."
+/>
+
 ## The hardware
 
 An ESP32 takes over the fish. It drives the mouth and tail motors through an L298N driver, and listens through a MAX4466 microphone. The fish's four AA batteries still power the motors.
+
+<Figure
+  src="/work/billy-bass/bench.png"
+  width={1200}
+  height={1600}
+  alt="Billy Bass on its plaque in front of the opened back panel, with the battery holder, the original speaker, an L298N motor driver, and a breadboard connected by jumper wires"
+  caption="The back panel open on the table: the original speaker and battery holder, the L298N, and the breadboard that links it to the ESP32."
+/>
+
+<Pair
+  images={[
+    { src: "/work/billy-bass/esp32.png", width: 1200, height: 1200, alt: "An ESP32 DevKit board held in a hand, connected by USB, with jumper wires running to a breadboard and the motor driver behind it" },
+    { src: "/work/billy-bass/l298n.png", width: 1200, height: 1200, alt: "A red Keyes L298N motor driver board screwed into the inside of the fish, with jumper wires on its inputs and the motor wires in its blue terminals" },
+  ]}
+  caption="The ESP32 that runs everything, and the L298N that drives the mouth and tail motors."
+/>
 
 A few things I learned the hard way:
 
@@ -31,19 +65,56 @@ The hardest part was making the mouth look like it's actually saying the words. 
 - **A threshold relative to the recent peak.** The mouth opens at about −10 dB from the loudest recent moment, so the volume of the phone or the song doesn't matter.
 - **Closing between syllables.** In continuous speech, the volume never drops to silence between syllables, so a fixed threshold leaves the mouth open for the whole sentence. The mouth closes when the voice dips 5 dB from its last peak and opens again when it rises 4 dB. A sustained note has no dips, so the mouth stays open while someone sings.
 
+<Video
+  src="/work/billy-bass/mouth.mp4"
+  poster="/work/billy-bass/mouth-poster.png"
+  width={540}
+  height={960}
+  label="Billy Bass on the table moving its mouth, with the L298N motor driver and the wiring behind it"
+  caption="The ESP32 moving Billy's mouth through the L298N, which sits behind him with its LEDs on."
+/>
+
 ## Talking to Billy
 
 A Python server on the PC does the listening and the talking. The ESP32 streams the microphone over WiFi, and the server checks if the phrase starts with "Billy":
 
 - **Commands run locally.** "Billy, pause", "next", "turn it up", or "dance" are recognized offline with Vosk and fuzzy matching. A command runs only if it scores well and clearly beats the second best.
-- **Everything else goes to the assistant.** Whisper transcribes the question and DeepSeek answers it, with tools for the time in Mexico City and the weather. The answer is spoken while it's still being written: each sentence goes to Piper for the voice as soon as it's complete, so the first one plays while the next is generated.
+- **Everything else goes to the assistant.** Whisper transcribes the question and DeepSeek answers it, with tools for the time in Mexico City and the weather. The answer is spoken while it's still being written: each sentence goes to the voice as soon as it's complete, so the first one plays while the next is generated.
 - **The voice goes back to the fish.** The reply audio streams to the ESP32 in 20 ms packets, and the mouth follows it with the same algorithm it uses for music.
+
+### Why Amazon Polly
+
+I started with voices that run on the PC. Piper is fast and free, and I tried running it through an RVC model to give Billy a deeper, more characterful voice. But the PC has no dedicated GPU, and the same CPU is also transcribing with Whisper and streaming the audio that drives the motors. When it got busy, the first sentence took several seconds to arrive and the mouth fell out of step with the sound.
+
+After a lot of testing with Piper, I moved the voice to Amazon Polly for now. The synthesis happens in the cloud, so the PC only has to stream the audio and keep the mouth in sync with it, which is the part that has to be on time.
+
+These are two results from Amazon Polly, converted with open-source RVC voice models from Hugging Face:
+
+<Audio src="/work/billy-bass/ex1.mp3" caption="Sample 1." />
+
+<Audio src="/work/billy-bass/ex2.mp3" caption="Sample 2." />
+
+<Figure
+  src="/work/billy-bass/top.png"
+  width={1200}
+  height={1600}
+  alt="Billy Bass seen from above on its plaque, head up, with the USB cable and the breadboard next to it"
+  caption="Billy, wired up and waiting for someone to say his name."
+/>
 
 ## Six personalities
 
 "Billy, mafia mode" turns it into a capo from New Jersey who jokes that traitors sleep with the fishes, since he does every night. There are also a pirate, a grandpa, a dramatic actor, an Austrian, and a normal mode. Each one is a Markdown file with its own rules, examples, and voice. The shared rules always go first and identical in every request, so DeepSeek serves them from its cache: from the second question on, most of the input costs about 50 times less.
 
 ## What's next
+
+<Figure
+  src="/work/billy-bass/amplifier.png"
+  width={1200}
+  height={1200}
+  alt="A blue two-channel amplifier board with a large black heatsink, six 330 µF capacitors, and green screw terminals, held in a hand"
+  caption="The 2 × 50 W amplifier I had at hand. It needs 12 to 26 V and is bigger than Billy's head, so he's waiting for a small MAX98357A instead."
+/>
 
 - An amplifier (MAX98357A), so Billy talks through his own speaker.
 - A stronger motor driver for the tail, which barely lifts with the voltage the L298N leaves.
