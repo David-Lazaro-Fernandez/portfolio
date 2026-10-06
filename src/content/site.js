@@ -186,6 +186,12 @@ export const projects = [
       "Real-time location tracking for fishermen. A Flutter app records each trip offline and syncs it to Firebase when there's coverage, and a Streamlit dashboard draws every route on a map.",
   },
   {
+    name: "Delulu",
+    href: "/work/delulu",
+    summary:
+      "1st place at Hack MTY 2024, Gen AI challenge. We pointed cameras at the sponsor booths of a 1,500-person hackathon and turned the footage into heatmaps of where people gathered and how long they stayed.",
+  },
+  {
     name: "omegaUp",
     href: "https://www.omegaup.org/",
     summary:
@@ -209,4 +215,13 @@ export const socials = [
   { label: "GitHub", href: "https://github.com/David-Lazaro-Fernandez" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/davidlfr" },
   { label: "X", href: "https://twitter.com/DavidLazaroFern" },
+];
+
+export const hardware = [
+  {
+    name: "Billy Bass",
+    href: "/work/billy-bass",
+    summary:
+      "A singing fish from a flea market, rewired with an ESP32 into a Bluetooth speaker and a voice assistant. Its mouth follows the music and the replies, and it answers in six personalities, from a Soprano to a pirate.",
+  },
 ];

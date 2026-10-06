@@ -15,10 +15,10 @@ import { useEffect, useRef } from "react";
 export const DEFAULTS = {
   cell: 12, // CSS px between the centers of two dots
   dot: 1.5, // CSS px
-  alpha: 0.26, // opacity of the layer
+  alpha: 0.22, // opacity of the layer
   densityEdge: 1, // fraction of cells with a dot, at the left and right edges
-  densityCenter: 0.35, // fraction of cells with a dot, at the center
-  fadeCurve: 5, // exponent of the fade; a high value keeps more of the center light
+  densityCenter: 0, // fraction of cells with a dot, at the center
+  fadeCurve: 2.3, // exponent of the fade; a high value keeps more of the center light
   airRadius: 190,
   airStrength: 2.9,
   airIdle: 0.35, // part of the push when the pointer does not move
