@@ -30,7 +30,7 @@ colors-dark:
   faint: "#6b6b6b"
   hairline: "#1f1f1f"
   hairline-soft: "#141414"
-  canvas: "#050505"
+  canvas: "#000000"
   canvas-elevated: "#0f0f0f"
   link: "#3291ff"
   link-deep: "#52a8ff"
@@ -282,7 +282,7 @@ Everything else is calm on purpose, so the effect is the one thing that moves.
 - **Error / warning**: form validation only.
 
 ### Dark theme
-`colors-dark` mirrors every token. **Dark is the default theme**: a #050505 canvas with #ededed ink, and the dither dots in light ink. The light tokens above are kept for a future toggle.
+`colors-dark` mirrors every token. **Dark is the default theme**: a #000000 canvas with #ededed ink, and the dither dots in light ink. The light tokens above are kept for a future toggle.
 
 ## Typography
 

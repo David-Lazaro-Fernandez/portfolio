@@ -1,0 +1,51 @@
+export const metadata = {
+  title: "Billy Bass",
+  summary:
+    "A Big Mouth Billy Bass from a flea market, rewired with an ESP32 into a Bluetooth speaker and a voice assistant that moves its mouth as it talks.",
+  year: "2026",
+  stack: ["ESP32", "C++", "PlatformIO", "Python", "Vosk", "Whisper", "DeepSeek", "Piper"],
+};
+
+## The idea
+
+I bought a Big Mouth Billy Bass at a tianguis for 500 pesos. I love The Sopranos, so I wanted it to be my personal assistant: a fish on the living room wall that answers questions, plays music, and talks back like it runs the family business. The [code is on GitHub](https://github.com/David-Lazaro-Fernandez/Billy-Bass).
+
+It works in phases, and it's still in progress. Today the fish is a Bluetooth speaker whose mouth follows the music, it hears "Billy, …" commands, and it answers free questions with a voice and a mouth in sync. The last missing piece is a small amplifier, so for now the replies play through the PC speakers instead of the fish's own.
+
+## The hardware
+
+An ESP32 takes over the fish. It drives the mouth and tail motors through an L298N driver, and listens through a MAX4466 microphone. The fish's four AA batteries still power the motors.
+
+A few things I learned the hard way:
+
+- **GPIO 5 resets the board.** Wiring a motor input there put the ESP32 in a boot loop, so it stays empty.
+- **PWM frequency matters.** At 20 kHz the L298N barely delivers current, so the motors run at 1 kHz.
+- **A spring isn't fast enough.** Releasing the motor doesn't close the mouth in time for the next syllable, so the firmware pulls it shut by running the motor backwards for 80 ms.
+- **The ADC2 pins stop working with WiFi on**, so the microphone uses an ADC1 pin.
+
+## Moving the mouth with the voice
+
+The hardest part was making the mouth look like it's actually saying the words. Before writing it, I read the code of the other talking-fish and talking-skull projects I could find. They all follow the same pattern, and the ones that look good do three extra things:
+
+- **Time constants in milliseconds, not per block.** The microphone sends 20 ms blocks and Bluetooth sends blocks of any size, so the smoothing has to be defined in time to behave the same with both.
+- **A threshold relative to the recent peak.** The mouth opens at about −10 dB from the loudest recent moment, so the volume of the phone or the song doesn't matter.
+- **Closing between syllables.** In continuous speech, the volume never drops to silence between syllables, so a fixed threshold leaves the mouth open for the whole sentence. The mouth closes when the voice dips 5 dB from its last peak and opens again when it rises 4 dB. A sustained note has no dips, so the mouth stays open while someone sings.
+
+## Talking to Billy
+
+A Python server on the PC does the listening and the talking. The ESP32 streams the microphone over WiFi, and the server checks if the phrase starts with "Billy":
+
+- **Commands run locally.** "Billy, pause", "next", "turn it up", or "dance" are recognized offline with Vosk and fuzzy matching. A command runs only if it scores well and clearly beats the second best.
+- **Everything else goes to the assistant.** Whisper transcribes the question and DeepSeek answers it, with tools for the time in Mexico City and the weather. The answer is spoken while it's still being written: each sentence goes to Piper for the voice as soon as it's complete, so the first one plays while the next is generated.
+- **The voice goes back to the fish.** The reply audio streams to the ESP32 in 20 ms packets, and the mouth follows it with the same algorithm it uses for music.
+
+## Six personalities
+
+"Billy, mafia mode" turns it into a capo from New Jersey who jokes that traitors sleep with the fishes, since he does every night. There are also a pirate, a grandpa, a dramatic actor, an Austrian, and a normal mode. Each one is a Markdown file with its own rules, examples, and voice. The shared rules always go first and identical in every request, so DeepSeek serves them from its cache: from the second question on, most of the input costs about 50 times less.
+
+## What's next
+
+- An amplifier (MAX98357A), so Billy talks through his own speaker.
+- A stronger motor driver for the tail, which barely lifts with the voltage the L298N leaves.
+- The neck motor, which needs a second driver.
+- Power inside the fish, so the ESP32 can leave the USB cable behind.

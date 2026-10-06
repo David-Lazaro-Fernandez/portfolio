@@ -7,6 +7,7 @@ import {
   experience,
   consultancy,
   projects,
+  hardware,
   awards,
   communities,
   education,
@@ -45,6 +46,16 @@ export default async function Home() {
 
       <Section title="Projects">
         {projects.map((project) => (
+          <Entry
+            key={project.name}
+            title={<TextLink href={project.href}>{project.name}</TextLink>}
+            summary={project.summary}
+          />
+        ))}
+      </Section>
+
+      <Section title="Hardware">
+        {hardware.map((project) => (
           <Entry
             key={project.name}
             title={<TextLink href={project.href}>{project.name}</TextLink>}
