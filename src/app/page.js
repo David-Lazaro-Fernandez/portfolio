@@ -71,9 +71,13 @@ export default async function Home() {
       </Section>
 
       <Section title="Communities">
-        {communities.map((c) => (
-          <Row key={c.name} title={c.name} detail={c.summary} />
-        ))}
+        {communities.map((c) =>
+          c.bullets ? (
+            <Entry key={c.name} title={c.name} meta={c.period} summary={c.summary} bullets={c.bullets} />
+          ) : (
+            <Row key={c.name} title={c.name} detail={c.summary} />
+          ),
+        )}
       </Section>
 
       <Section title="Education">

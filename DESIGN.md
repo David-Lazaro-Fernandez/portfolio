@@ -282,7 +282,7 @@ Everything else is calm on purpose, so the effect is the one thing that moves.
 - **Error / warning**: form validation only.
 
 ### Dark theme
-`colors-dark` mirrors every token. **Dark is the default theme**: a #000000 canvas with #ededed ink, and the dither dots in light ink. The light tokens above are kept for a future toggle.
+`colors-dark` mirrors every token: a #000000 canvas with #ededed ink, and the dither dots in light ink. The toggle at the top of the header cycles System → Light → Dark. System is the default and follows the device setting live. A Light or Dark choice is saved in `localStorage` (`theme`); System removes it. An inline script in the root layout sets `data-theme` (the choice) and the `.dark` class (the shown theme) on `<html>` before the first paint.
 
 ## Typography
 

@@ -49,7 +49,9 @@ export default function DitherField({ params, rebuildRef }) {
     const cache = document.createElement("canvas");
     const cacheCtx = cache.getContext("2d");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    // A theme change sets a new --color-ink, the color of the dots.
+    const themeObserver = new MutationObserver(build);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
     let dpr = 1;
     let width = 0;
@@ -260,7 +262,6 @@ export default function DitherField({ params, rebuildRef }) {
     function attach() {
       while (listeners.length) listeners.pop()();
       listen(window, "resize", onResize);
-      listen(darkScheme, "change", build);
       listen(reducedMotion, "change", attach);
       // With reduced motion, the grain stays but the pointer does not move the dots.
       if (!reducedMotion.matches) {
@@ -281,6 +282,7 @@ export default function DitherField({ params, rebuildRef }) {
 
     return () => {
       while (listeners.length) listeners.pop()();
+      themeObserver.disconnect();
       clearTimeout(resizeTimer);
       cancelAnimationFrame(frame);
     };

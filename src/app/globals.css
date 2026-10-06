@@ -1,15 +1,20 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant theme-system (&:where([data-theme="system"] *));
+@custom-variant theme-light (&:where([data-theme="light"] *));
+@custom-variant theme-dark (&:where([data-theme="dark"] *));
+
 @theme {
-  --color-ink: #ededed;
-  --color-body: #b4b4b4;
+  --color-ink: #171717;
+  --color-body: #4d4d4d;
   --color-mute: #8f8f8f;
-  --color-faint: #6b6b6b;
-  --color-hairline: #1f1f1f;
-  --color-hairline-soft: #141414;
-  --color-canvas: #000000;
-  --color-elevated: #0f0f0f;
-  --color-link: #3291ff;
+  --color-faint: #a1a1a1;
+  --color-hairline: #ebebeb;
+  --color-hairline-soft: #f2f2f2;
+  --color-canvas: #fafafa;
+  --color-elevated: #ffffff;
+  --color-link: #0070f3;
 
   --font-sans: var(--font-geist-sans), Arial, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -19,8 +24,22 @@
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
   --dither-alpha: 0.26;
+}
+
+/* The script in layout.js sets this class before the first paint. */
+html.dark {
+  color-scheme: dark;
+  --color-ink: #ededed;
+  --color-body: #b4b4b4;
+  --color-mute: #8f8f8f;
+  --color-faint: #6b6b6b;
+  --color-hairline: #1f1f1f;
+  --color-hairline-soft: #141414;
+  --color-canvas: #000000;
+  --color-elevated: #0f0f0f;
+  --color-link: #3291ff;
 }
 
 body {

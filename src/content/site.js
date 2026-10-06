@@ -144,6 +144,26 @@ export const communities = [
     name: "Bisontech",
     summary: "Founded one of the most important technology communities at my university.",
   },
+  {
+    name: "Tigre Hacks",
+    period: "2023",
+    summary:
+      "Founded the Tigre Hacks hackathon, orchestrating logistics for over 200 attendees and raising more than 220k MXN to foster innovation and knowledge exchange within the developer community.",
+    bullets: [
+      [
+        "Check out the hackathon pictures at: ",
+        {
+          text: "Google Photos",
+          href: "https://photos.google.com/share/AF1QipPll5pMOb8Np5mtG7X5k1n-tG5BTpRHUD2ywkI1emXmS4ufQWEFCWmxDPVC4YZ8eA?key=WFplUEF1NTQ3SEw2TEl0MnhFZFNWVVNPZ010eWNB",
+        },
+      ],
+      [
+        "If you want to see the legacy page, you can access: ",
+        { text: "tigre-hacks-one.vercel.app", href: "https://tigre-hacks-one.vercel.app/" },
+      ],
+      ["Just for fun, check out the epic downfall of ", { text: "the pizza tower", href: "/work/pizza-tower" }],
+    ],
+  },
   { name: "GitHub Campus Experts", summary: "" },
   { name: "Microsoft Learn Student Ambassadors", summary: "" },
 ];
